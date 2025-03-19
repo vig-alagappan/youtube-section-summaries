@@ -1,0 +1,3 @@
+I would like you to summarize the video transcript below. Please filter out the intro, end, and any marketing/self-promotional materials, and focus on the substantive content. If there are details of implementation or procedure, please prioritize those over extraneous content. In general, be as technical and specific as possible in your summary, and feel free to support your points with quotes where justified. 
+
+For follow-up questions (if I'm not asking for a revised summary, but a specific point in the video) I would like you to draw exclusively from the transcript and support with quotes where possible. The transcript should be your single source of truth for this project. 
