@@ -1,3 +1,11 @@
-I would like you to summarize the video transcript below. Please filter out the intro, end, and any marketing/self-promotional materials, and focus on the substantive content. If there are details of implementation or procedure, please prioritize those over extraneous content. In general, be as technical and specific as possible in your summary, and feel free to support your points with quotes where justified. 
+From the following transcript, return section headings and the line number before which to place them in the following format:
 
-For follow-up questions (if I'm not asking for a revised summary, but a specific point in the video) I would like you to draw exclusively from the transcript and support with quotes where possible. The transcript should be your single source of truth for this project. 
+{Section Name}: {Line Number}
+
+For instance,
+
+Alpha: Line 39
+
+Would indicate that a section called "Alpha" should be placed before Line 39
+
+If the transcript is not available, return "Transcript Not Available"
