@@ -27,7 +27,7 @@ def fetch_transcript(video_id: str) -> str:
     transcript_text = "\n".join(f"{i+1}: {line}" for i, line in enumerate(cleaned_transcript))
     return transcript_text
 
-def load_prompt(file_path: str = "/Users/vignesh.alagappan/Documents/GitHub/youtube-section-summaries/youtube_agent.txt") -> str:
+def load_prompt(file_path: str = "youtube_agent.txt") -> str:
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Prompt file '{file_path}' not found.")
     with open(file_path, "r", encoding="utf-8") as f:
