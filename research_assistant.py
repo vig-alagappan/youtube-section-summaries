@@ -108,7 +108,9 @@ def write_paragraph_to_pdf(paragraph, pdf):
     # Add equal spacing after the paragraph.
     pdf.ln(4)
 
-def generate_filename(url: str, output_dir: str ="/Users/vignesh.alagappan/Documents/GitHub/youtube-section-summaries/pdf_outputs_testing/") -> str:
+def generate_filename(url: str, output_dir: str) -> str:
+    outp
+    
     yt = YouTube(url)
     channel_name = yt.author
     video_title = yt.title
@@ -130,18 +132,3 @@ def generate_pdf_from_transcript(url, transcript_text, output_path):
     for paragraph in paragraphs:
         write_paragraph_to_pdf(paragraph, pdf)
     pdf.output(output_path)
-
-def main():
-    url = "https://www.youtube.com/watch?v=GHcAIiL9J_Y&ab_channel=RenaissancePeriodization"
-    video_id = get_video_id(url)
-    transcript_text = fetch_transcript(video_id)
-    sections = get_sections(url)
-    transcript_with_sections = insert_sections(transcript_text, sections)
-    cleaned_lines = clean_transcript_lines(transcript_with_sections)
-    merged_transcript = assemble_transcript(cleaned_lines)
-    output_path = generate_filename(url)
-    generate_pdf_from_transcript(url, merged_transcript, output_path)
-    print(f"PDF created at {output_path}")
-
-if __name__ == "__main__":
-    main()
