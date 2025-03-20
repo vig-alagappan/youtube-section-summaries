@@ -17,6 +17,15 @@ def get_video_id(url: str) -> str:
         return match.group(1)
     raise ValueError("Could not extract video ID from URL.")
 
+def generate_filename(url: str, output_dir: str) -> str:
+    yt = YouTube(url)
+    channel_name = yt.author
+    video_title = yt.title
+    safe_channel = re.sub(r'\W+', '-', channel_name.lower())
+    safe_title = re.sub(r'\W+', '-', video_title.lower())
+    filename = f"{safe_channel}_{safe_title}.pdf"
+    return os.path.join(output_dir, filename)
+
 def fetch_transcript(video_id: str) -> str:
     transcript_data = YouTubeTranscriptApi.get_transcript(video_id)
     cleaned_transcript = [
@@ -96,7 +105,6 @@ def assemble_transcript(clean_lines) -> str:
     return "\n\n".join(paragraphs)
 
 def write_paragraph_to_pdf(paragraph, pdf):
-    # Add spacing before the paragraph.
     pdf.ln(4)
     if paragraph.startswith("###"):
         header_text = paragraph.lstrip("###").strip()
@@ -105,32 +113,34 @@ def write_paragraph_to_pdf(paragraph, pdf):
     else:
         pdf.set_font("Arial", "", 14)
         pdf.multi_cell(0, 10, paragraph)
-    # Add equal spacing after the paragraph.
     pdf.ln(4)
 
-def generate_filename(url: str, output_dir: str) -> str:
-    yt = YouTube(url)
-    channel_name = yt.author
-    video_title = yt.title
-    safe_channel = re.sub(r'\W+', '-', channel_name.lower())
-    safe_title = re.sub(r'\W+', '-', video_title.lower())
-    filename = f"{safe_channel}_{safe_title}.pdf"
-    return os.path.join(output_dir, filename)
-
-def generate_pdf_from_transcript(url, transcript_text, output_path):
-
-    output_dir = os.path.dirname(output_path)
-    os.makedirs(output_dir, exist_ok=True)
-    
+def generate_pdf_from_transcript(url, transcript_text, output_dir, filename):
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
-
     pdf.set_font("Arial", "", 12)
     pdf.multi_cell(0, 10, f"Source: {url}")
     pdf.ln(5)
-
     paragraphs = transcript_text.split("\n\n")
     for paragraph in paragraphs:
         write_paragraph_to_pdf(paragraph, pdf)
+    output_path = os.path.join(output_dir, filename)
     pdf.output(output_path)
+
+    print(f"{filename} successfully saved in {output_dir}")
+
+def main(url, output_dir):
+    video_id = get_video_id(url)
+    filename = os.path.basename(generate_filename(url, output_dir))
+    transcript_text = fetch_transcript(video_id)
+    sections = get_sections(url)
+    section_transcript = insert_sections(transcript_text, sections)
+    cleaned_lines = clean_transcript_lines(section_transcript)
+    assembled_transcript = assemble_transcript(cleaned_lines)
+    generate_pdf_from_transcript(url, assembled_transcript, output_dir, filename)
+
+if __name__ == "__main__":
+    url = input("URL > ")
+    output_dir = input("Output Directory > ").strip().strip('\'"')
+    main(url, output_dir)
