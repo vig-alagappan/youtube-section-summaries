@@ -109,8 +109,6 @@ def write_paragraph_to_pdf(paragraph, pdf):
     pdf.ln(4)
 
 def generate_filename(url: str, output_dir: str) -> str:
-    outp
-    
     yt = YouTube(url)
     channel_name = yt.author
     video_title = yt.title
