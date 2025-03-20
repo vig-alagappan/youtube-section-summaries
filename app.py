@@ -32,21 +32,25 @@ def generate_pdf_buffer(url: str, transcript_text: str) -> io.BytesIO:
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
-    
+
     # Write source at the top
     pdf.set_font("Arial", "", 12)
     pdf.multi_cell(0, 10, f"Source: {url}")
     pdf.ln(5)
-    
+
     paragraphs = transcript_text.split("\n\n")
     for paragraph in paragraphs:
         write_paragraph_to_pdf(paragraph, pdf)
     
-    # Save PDF to a BytesIO buffer
-    buffer = io.BytesIO()
-    pdf.output(buffer, 'F')
+    # Get PDF as a string using destination "S"
+    pdf_str = pdf.output(dest="S")
+    # Encode to bytes (FPDF outputs in Latin-1 encoding by default)
+    pdf_bytes = pdf_str.encode("latin1")
+    # Create a BytesIO buffer with the PDF bytes
+    buffer = io.BytesIO(pdf_bytes)
     buffer.seek(0)
     return buffer
+
 
 # --- Main Streamlit App ---
 def main():
