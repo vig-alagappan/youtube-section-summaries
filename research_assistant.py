@@ -118,6 +118,10 @@ def generate_filename(url: str, output_dir: str) -> str:
     return os.path.join(output_dir, filename)
 
 def generate_pdf_from_transcript(url, transcript_text, output_path):
+
+    output_dir = os.path.dirname(output_path)
+    os.makedirs(output_dir, exist_ok=True)
+    
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
